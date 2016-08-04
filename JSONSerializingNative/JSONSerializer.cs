@@ -7,7 +7,7 @@ namespace JSONSerializingNative
 {
     public class JSONSerializer<T>
     {
-        public string Serialize(T o)
+        public string SerializeAsString(T o)
         {
             using (var ms = new MemoryStream())
             {
@@ -19,13 +19,28 @@ namespace JSONSerializingNative
             }
         }
 
-        public T Deserialize(string json)
+        public Stream SerializeAsStream(T o)
+        {
+            var ms = new MemoryStream();
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            serializer.WriteObject(ms, o);
+            ms.Position = 0;
+            return ms;
+        }
+
+        public T DeserializeFromString(string json)
         {
             using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
             {
                 var deserializer = new DataContractJsonSerializer(typeof(T));
                 return (T)deserializer.ReadObject(ms);
             }
+        }
+
+        public T DeserializeFromStream(Stream json)
+        {
+            var deserializer = new DataContractJsonSerializer(typeof(T));
+            return (T)deserializer.ReadObject(json);
         }
     }
 }

@@ -19,11 +19,11 @@ namespace JSONSerializingNative
             var json = "{\"Employees\":[{\"Age\":35,\"Name\":\"Vera\"},{\"Age\":41,\"Name\":\"Chuck\"},{\"Age\":26,\"Name\":\"Dave\"}],\"Name\":\"Toverstudio\"}";
 
             var serializer = new JSONSerializer<Company>();
-            var company = serializer.Deserialize(json);
+            var company = serializer.DeserializeFromString(json);
 
             company.Name = "Aliens Bring Change";
 
-            var json2 = serializer.Serialize(company);
+            var json2 = serializer.SerializeAsString(company);
             Debug.WriteLine(json2);
         }
     }
